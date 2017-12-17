@@ -1,0 +1,39 @@
+diff --git a/src/Group.h b/src/Group.h
+index 91cfe44..8159182 100644
+--- a/src/Group.h
++++ b/src/Group.h
+@@ -16,7 +16,7 @@ enum ListenOptions {
+ struct Hub;
+ 
+ template <bool isServer>
+-struct WIN32_EXPORT Group : private uS::NodeData {
++struct WIN32_EXPORT Group : protected uS::NodeData {
+ protected:
+     friend struct Hub;
+     friend struct WebSocket<isServer>;
+diff --git a/src/HTTPSocket.h b/src/HTTPSocket.h
+index 5cc7a7f..ac1de60 100644
+--- a/src/HTTPSocket.h
++++ b/src/HTTPSocket.h
+@@ -126,7 +126,7 @@ struct WIN32_EXPORT HttpSocket : uS::Socket {
+                  size_t extensionsLength, const char *subprotocol,
+                  size_t subprotocolLength, bool *perMessageDeflate);
+ 
+-private:
++protected:
+     friend struct uS::Socket;
+     friend struct HttpResponse;
+     friend struct Hub;
+diff --git a/src/Hub.h b/src/Hub.h
+index 2effd0f..c245cfd 100644
+--- a/src/Hub.h
++++ b/src/Hub.h
+@@ -10,7 +10,7 @@
+ 
+ namespace uWS {
+ 
+-struct WIN32_EXPORT Hub : private uS::Node, public Group<SERVER>, public Group<CLIENT> {
++struct WIN32_EXPORT Hub : protected uS::Node, public Group<SERVER>, public Group<CLIENT> {
+ protected:
+     struct ConnectionData {
+         std::string path;
